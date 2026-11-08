@@ -9,7 +9,7 @@ Roll number 23L-0881. Project name `23L-0881_A2_Ops`.
 | Link | Value |
 | --- | --- |
 | GitHub | https://github.com/FatimaHabib191/23L-0881_A2_Ops |
-| DagsHub | https://dagshub.com/YOUR_DAGSHUB_USER/23L-0881_A2_Ops |
+| DagsHub | https://dagshub.com/FatimaHabib191/23L-0881_A2_Ops |
 | Model API | http://YOUR_VM_PUBLIC_IP:8000 |
 
 ## Quick start
