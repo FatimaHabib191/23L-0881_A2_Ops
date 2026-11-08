@@ -10,7 +10,7 @@ Roll number 23L-0881. Project name `23L-0881_A2_Ops`.
 | --- | --- |
 | GitHub | https://github.com/FatimaHabib191/23L-0881_A2_Ops |
 | DagsHub | https://dagshub.com/FatimaHabib191/23L-0881_A2_Ops |
-| Model API | http://YOUR_VM_PUBLIC_IP:8000 |
+| Model API | https://23-l-0881-a2-ops.vercel.app |
 
 ## Quick start
 
@@ -31,8 +31,6 @@ Browser -> Flask web (localhost:5000) -> PostgreSQL (internal network, no publis
                   v
            Model API on the cloud VM (port 8000) -> Keras champion, loaded once at start-up
 ```
-
-The full step-by-step guide is in [RUNBOOK.md](RUNBOOK.md), and cloud steps are in [docs/DEPLOY_OCI.md](docs/DEPLOY_OCI.md).
 
 ## Layout
 
