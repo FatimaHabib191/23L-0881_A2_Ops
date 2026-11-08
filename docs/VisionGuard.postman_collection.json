@@ -1,0 +1,33 @@
+{
+  "info": {
+    "name": "23L-0881_A2_Ops VisionGuard API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://YOUR_VM_PUBLIC_IP:8000" },
+    { "key": "api_key", "value": "PUT_YOUR_KEY_HERE" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "{{base_url}}/health" }
+    },
+    {
+      "name": "Predict (valid key)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/v1/predict",
+        "header": [{ "key": "X-API-Key", "value": "{{api_key}}" }],
+        "body": { "mode": "formdata", "formdata": [{ "key": "image", "type": "file", "src": "" }] }
+      }
+    },
+    {
+      "name": "Predict (missing key returns 401)",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/v1/predict",
+        "body": { "mode": "formdata", "formdata": [{ "key": "image", "type": "file", "src": "" }] }
+      }
+    }
+  ]
+}

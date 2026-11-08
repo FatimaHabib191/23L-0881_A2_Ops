@@ -1,0 +1,10 @@
+# Task 6.4 "before" image only: full base, one stage, pip cache kept, build tools retained.
+# Build it with: docker build -f Dockerfile.unoptimized -t visionguard:before .
+FROM python:3.12
+WORKDIR /app
+COPY requirements-serve.txt .
+RUN pip install -r requirements-serve.txt
+COPY visionguard/ ./visionguard/
+COPY webapp/ ./webapp/
+COPY model_api/ ./model_api/
+CMD ["flask", "--app", "webapp:create_app", "run", "--host=0.0.0.0", "--port=5000", "--no-debug"]

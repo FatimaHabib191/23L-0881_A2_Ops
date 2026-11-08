@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Check an image | VisionGuard{% endblock %}
+{% block content %}
+<h1>Is this image AI-generated?</h1>
+<p class="lead">Upload an image and VisionGuard gives a verdict with a confidence value. Your image is processed in memory and is not stored.</p>
+<form class="panel" action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data">
+  <label class="drop" for="image">
+    <img id="preview" alt="" hidden>
+    <span id="prompt"><strong>Choose an image</strong><br>JPG, PNG or WebP, up to {{ max_mb }} MB</span>
+    <input id="image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp" required>
+  </label>
+  <button type="submit" id="submit">Analyze image</button>
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+  const input = document.getElementById("image");
+  const preview = document.getElementById("preview");
+  const prompt = document.getElementById("prompt");
+  input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (!file) return;
+    preview.src = URL.createObjectURL(file);
+    preview.hidden = false;
+    prompt.textContent = file.name;
+  });
+  document.querySelector("form").addEventListener("submit", () => {
+    const button = document.getElementById("submit");
+    button.disabled = true;
+    button.textContent = "Analyzing...";
+  });
+</script>
+{% endblock %}

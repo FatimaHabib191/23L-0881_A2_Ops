@@ -1,0 +1,20 @@
+# Cloud VM: the public model API. Run with: docker compose -f docker-compose.api.yml up -d --build
+name: 23l-0881_a2_ops_api
+
+services:
+  model-api:
+    build: .
+    image: 23l-0881_a2_ops-api:latest
+    restart: unless-stopped
+    command: ["gunicorn", "--workers=1", "--threads=2", "--timeout=120", "--bind=0.0.0.0:8000", "--access-logfile=-", "model_api.app:create_api()"]
+    environment:
+      PORT: "8000"
+      MODEL_PATH: /models/model.keras
+      MODEL_VERSION: ${MODEL_VERSION:?set MODEL_VERSION in .env}
+      MODEL_THRESHOLD: ${MODEL_THRESHOLD:?set MODEL_THRESHOLD in .env}
+      MODEL_API_KEY: ${MODEL_API_KEY:?set MODEL_API_KEY in .env}
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-8}
+    volumes:
+      - ./models/champion:/models:ro
+    ports:
+      - "8000:8000"

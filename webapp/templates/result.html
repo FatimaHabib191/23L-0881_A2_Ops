@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Result | VisionGuard{% endblock %}
+{% block content %}
+{% set percent = (record.confidence * 100)|round(1) %}
+<h1>Result</h1>
+<section class="panel result {{ record.label }}">
+  <p class="eyebrow">{{ record.filename }}</p>
+  <p class="verdict">{{ verdict }}</p>
+  <div class="meter" role="img" aria-label="Confidence {{ percent }} percent"><span style="width: {{ percent }}%"></span></div>
+  <p class="confidence">Confidence {{ percent }}%</p>
+  {% if record.confidence < 0.65 %}<p class="notice">Low confidence: treat this verdict as inconclusive.</p>{% endif %}
+  <dl>
+    <dt>Probability AI-generated</dt><dd>{{ "%.3f"|format(record.probability_ai) }}</dd>
+    <dt>Decision threshold</dt><dd>{{ "%.3f"|format(record.threshold) }}</dd>
+    <dt>Model</dt><dd>{{ record.model_version }}</dd>
+    <dt>Inference</dt><dd>{{ record.backend }}, {{ record.latency_ms }} ms</dd>
+    <dt>Checked</dt><dd>{{ record.created_at.strftime("%Y-%m-%d %H:%M:%S") }} UTC</dd>
+  </dl>
+</section>
+<aside class="caveat">
+  <strong>Please read this before relying on the result.</strong>
+  VisionGuard makes a statistical estimate from a small training set and can be wrong in both directions. New generators, heavy editing, compression and screenshots can all mislead it. Do not treat this verdict as proof that an image is fake or genuine, or use it alone to accuse anyone.
+</aside>
+<p><a class="button" href="{{ url_for('upload') }}">Check another image</a></p>
+{% endblock %}

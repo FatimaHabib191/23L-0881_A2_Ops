@@ -1,0 +1,52 @@
+:root {
+  --ink: #17202a; --muted: #5d6b78; --line: #dbe2e8; --page: #f5f7f9; --panel: #fff;
+  --accent: #1f5f8b; --ai: #a83c32; --real: #23784f; --warn-bg: #fff7e6; --warn-line: #e6c477;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+a { color: var(--accent); }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: var(--panel); border-bottom: 1px solid var(--line); }
+.brand { font-weight: 700; font-size: 1.15rem; color: var(--ink); text-decoration: none; }
+.topbar nav a { margin-left: 20px; text-decoration: none; color: var(--muted); padding-bottom: 4px; }
+.topbar nav a[aria-current] { color: var(--ink); border-bottom: 2px solid var(--accent); }
+main { max-width: 1040px; margin: 0 auto; padding: 32px 20px 48px; }
+h1 { margin: 0 0 8px; font-size: 1.8rem; line-height: 1.2; }
+.lead { color: var(--muted); margin: 0 0 22px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 24px; }
+.drop { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: 230px; padding: 20px; border: 2px dashed #b9c5cf; border-radius: 8px; text-align: center; color: var(--muted); cursor: pointer; }
+.drop:hover, .drop:focus-within { border-color: var(--accent); }
+.drop strong { color: var(--ink); }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.drop img { max-height: 260px; max-width: 100%; border-radius: 4px; }
+button, .button { display: inline-block; margin-top: 16px; padding: 11px 20px; border: 0; border-radius: 6px; background: var(--accent); color: #fff; font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; }
+button:disabled { opacity: .65; cursor: wait; }
+.eyebrow { margin: 0 0 6px; color: var(--muted); font-size: .9rem; overflow-wrap: anywhere; }
+.verdict { margin: 0 0 14px; font-size: 2.2rem; font-weight: 700; line-height: 1.1; }
+.result.ai_generated .verdict { color: var(--ai); }
+.result.real .verdict { color: var(--real); }
+.meter { height: 10px; background: #e8edf1; border-radius: 5px; overflow: hidden; }
+.meter span { display: block; height: 100%; }
+.result.ai_generated .meter span { background: var(--ai); }
+.result.real .meter span { background: var(--real); }
+.confidence { margin: 8px 0 0; font-weight: 600; }
+.notice { margin: 12px 0 0; padding: 8px 12px; background: var(--warn-bg); border-radius: 6px; }
+dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 20px 0 0; font-size: .95rem; }
+dt { color: var(--muted); }
+dd { margin: 0; overflow-wrap: anywhere; }
+.caveat { margin: 18px 0 8px; padding: 14px 16px; background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 8px; }
+.filters { margin-bottom: 14px; }
+.filters a { display: inline-block; margin-right: 6px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); text-decoration: none; color: var(--muted); font-size: .9rem; }
+.filters a[aria-current] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.table-wrap { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { padding: 9px 12px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+th { color: var(--muted); font-weight: 600; }
+td.file { max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
+.tag { padding: 2px 8px; border-radius: 4px; font-size: .83rem; font-weight: 600; background: #eef1f4; color: var(--muted); }
+.tag.ai_generated { background: #f8e7e5; color: var(--ai); }
+.tag.real { background: #e3f3ea; color: var(--real); }
+.pager { display: flex; gap: 16px; justify-content: center; color: var(--muted); }
+.error h1 { margin-bottom: 10px; }
+footer { padding: 18px; text-align: center; color: var(--muted); font-size: .82rem; }
+@media (max-width: 560px) { .topbar { padding: 12px 16px; } .topbar nav a { margin-left: 12px; } dl { grid-template-columns: 1fr; gap: 2px; } dd { margin-bottom: 8px; } }

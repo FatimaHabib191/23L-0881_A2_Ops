@@ -1,0 +1,22 @@
+# Secrets
+.env
+.dvc/config.local
+
+# Environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Data and models, versioned by DVC or the MLflow registry
+/data/raw
+/models/
+*.keras
+
+# Generated results, tracked in MLflow
+/outputs/
+/mlruns/
+/mlartifacts/
+*.db

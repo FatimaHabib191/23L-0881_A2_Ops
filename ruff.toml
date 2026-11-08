@@ -1,0 +1,7 @@
+line-length = 160
+target-version = "py312"
+extend-exclude = ["ci_toy"]
+
+[lint]
+select = ["E", "F", "I"]
+ignore = ["E402", "I001"]
