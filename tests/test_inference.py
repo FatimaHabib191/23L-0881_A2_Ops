@@ -26,6 +26,12 @@ def test_verdict_confidence_is_for_the_chosen_class():
     assert label == "real" and confidence == pytest.approx(0.8)
 
 
+def test_confidence_never_contradicts_a_shifted_threshold():
+    label, confidence = verdict_from_probability(0.656, 0.79)
+    assert label == "real" and 0.5 < confidence < 0.65
+    assert verdict_from_probability(0.79, 0.79) == ("ai_generated", 0.5)
+
+
 def test_local_predictor_loads_keras_file(tmp_path):
     path = tmp_path / "model.keras"
     build_cnn(32, 0.1).save(path)

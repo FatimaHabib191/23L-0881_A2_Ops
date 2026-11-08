@@ -38,9 +38,15 @@ class Verdict:
 
 
 def verdict_from_probability(probability: float, threshold: float) -> tuple[str, float]:
+    """Return the label and a 0.5-1.0 confidence measured from the decision threshold.
+
+    0.5 means the score sits on the threshold and 1.0 means it is at the far end of
+    that side. This is not a calibrated probability: probability_ai reports the raw score.
+    With a threshold of 0.5 it equals the usual probability of the chosen class.
+    """
     if probability >= threshold:
-        return "ai_generated", probability
-    return "real", 1.0 - probability
+        return "ai_generated", 0.5 + 0.5 * (probability - threshold) / max(1.0 - threshold, 1e-9)
+    return "real", 0.5 + 0.5 * (threshold - probability) / max(threshold, 1e-9)
 
 
 class Predictor(Protocol):
