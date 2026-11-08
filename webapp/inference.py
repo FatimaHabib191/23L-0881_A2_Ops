@@ -1,6 +1,7 @@
 """Inference backends: the model in this process, or the model API over HTTP."""
 from __future__ import annotations
 
+import io
 import logging
 import threading
 import time
@@ -9,6 +10,7 @@ from pathlib import Path
 from typing import Protocol
 
 import requests
+from PIL import Image
 
 from webapp.settings import Settings
 
@@ -89,6 +91,21 @@ class LocalPredictor:
         return {"model_loaded": True, "image_size": self.image_size}
 
 
+TRANSPORT_LIMIT_BYTES = 4 * 1024 * 1024
+
+
+def shrink_for_transport(image_bytes: bytes) -> bytes:
+    """Vercel limits request bodies to 4.5 MB. The model only needs a small image anyway."""
+    if len(image_bytes) <= TRANSPORT_LIMIT_BYTES:
+        return image_bytes
+    with Image.open(io.BytesIO(image_bytes)) as image:
+        smaller = image.convert("RGB")
+        smaller.thumbnail((1600, 1600), Image.Resampling.BILINEAR)
+        buffer = io.BytesIO()
+        smaller.save(buffer, "JPEG", quality=92)
+    return buffer.getvalue()
+
+
 class RemotePredictor:
     """Calls the cloud model API. The API owns the model, threshold and version."""
 
@@ -102,7 +119,7 @@ class RemotePredictor:
         try:
             response = requests.post(
                 f"{self.url}/v1/predict",
-                files={"image": (filename, image_bytes)},
+                files={"image": (filename, shrink_for_transport(image_bytes))},
                 headers={"X-API-Key": self.key},
                 timeout=(5, self.timeout),
             )

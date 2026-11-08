@@ -1,12 +1,15 @@
+import io
+
 import keras
 import numpy as np
 import pytest
 from conftest import image_bytes
+from PIL import Image
 
 from visionguard.evaluation import choose_threshold, compute_metrics
 from visionguard.models import build_cnn
 from visionguard.preprocess import bytes_to_batch
-from webapp.inference import LocalPredictor, ModelLoadError, verdict_from_probability
+from webapp.inference import TRANSPORT_LIMIT_BYTES, LocalPredictor, ModelLoadError, shrink_for_transport, verdict_from_probability
 
 
 def test_preprocess_shape_range_and_rgb():
@@ -58,3 +61,16 @@ def test_threshold_respects_false_alarm_cap():
     chosen = choose_threshold(y, p, max_fpr=0.1)
     assert chosen["val_fpr"] <= 0.1
     assert compute_metrics(y, p, chosen["threshold"])["false_alarm_rate"] <= 0.1
+
+
+def test_small_uploads_are_sent_unchanged():
+    data = image_bytes("JPEG")
+    assert shrink_for_transport(data) is data
+
+
+def test_large_uploads_shrink_below_the_vercel_limit():
+    noise = np.random.default_rng(0).integers(0, 255, (2600, 2600, 3), dtype=np.uint8)
+    buffer = io.BytesIO()
+    Image.fromarray(noise).save(buffer, "PNG")
+    assert len(buffer.getvalue()) > TRANSPORT_LIMIT_BYTES
+    assert len(shrink_for_transport(buffer.getvalue())) <= TRANSPORT_LIMIT_BYTES
